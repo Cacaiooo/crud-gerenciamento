@@ -7,7 +7,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
-const port = 5000;
+
+// Usando a variável PORT do Vercel, ou fallback para a porta 5000 em desenvolvimento local
+const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.static('public'));
@@ -121,7 +123,7 @@ app.put('/employees/:id', async (req, res) => {
   }
 });
 
-// Inicia o servidor na porta 5000
+// Inicia o servidor na porta configurada
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
 });
