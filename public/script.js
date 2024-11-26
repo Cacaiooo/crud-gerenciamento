@@ -44,14 +44,13 @@ document.getElementById("addForm").addEventListener("submit", async (e) => {
 async function fetchEmployees() {
     try {
         const response = await fetch(API_URL);
-        if (response.ok) {
-            const employees = await response.json();
-            displayEmployees(employees);
-        } else {
-            console.error("Erro ao buscar funcionários:", response.statusText);
+        if (!response.ok) {
+            throw new Error(`Erro ao buscar funcionários: ${response.statusText}`);
         }
+        const employees = await response.json();
+        displayEmployees(employees);
     } catch (error) {
-        console.error("Erro na requisição de funcionários:", error);
+        console.error("Erro ao buscar funcionários:", error); // Adiciona mais detalhes ao log
     }
 }
 
