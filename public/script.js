@@ -1,4 +1,4 @@
-const API_URL = 'https://crud-gerenciamento.vercel.app/api/employees';
+const API_URL = 'https://crud-gerenciamento.vercel.app/models/employees';
 
 // Função para adicionar funcionário
 document.getElementById("addForm").addEventListener("submit", async (e) => {

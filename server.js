@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const Employee = require('./models/Employee');
+const Employee = require('./api/Employee.js');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -99,7 +99,7 @@ app.delete('/api/employees/:id', async (req, res) => {
 });
 
 // Rota para editar um funcionário
-app.put('/employees/:id', async (req, res) => {
+app.put('/api/employees/:id', async (req, res) => {
   const { id } = req.params;
   const { name, position, salary, dob, address } = req.body;
 
