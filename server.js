@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const Employee = require('./api/employee');
 const dotenv = require('dotenv');
+const employeesRouter = require('./api/employees'); // Importe o roteador
 
 dotenv.config();
 
@@ -29,8 +30,17 @@ mongoose
     console.error('Erro de conexão ao MongoDB:', err);
   });
 
+// **ADICIONE O ROTEADOR AQUI**
+app.use('', employeesRouter); // Rota para gerenciamento de funcionários
+
+// Inicia o servidor na porta configurada
+app.listen(port, () => {
+  console.log(`Servidor rodando na porta ${port}`);
+});
+
+
 // Rota para listar um funcionário pelo ID
-app.get('/api/employees', async (req, res) => {
+app.get('/', async (req, res) => {
     console.log("Recebendo requisição para listar todos os funcionários"); // Log de requisição
     try {
         const employees = await Employee.find(); // Busca todos os funcionários no banco
@@ -43,7 +53,7 @@ app.get('/api/employees', async (req, res) => {
 });
 
 // Rota para buscar funcionário por ID
-app.get('/api/employees/:id', async (req, res) => {
+app.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
       const employee = await Employee.findById(id);
@@ -58,7 +68,7 @@ app.get('/api/employees/:id', async (req, res) => {
 });
 
 // Rota para adicionar um novo funcionário
-app.post('/api/employees', async (req, res) => {
+app.post('/', async (req, res) => {
   const { name, position, salary, dob, address } = req.body;
 
   if (!name || !position || !salary || !dob || !address) {
@@ -78,7 +88,7 @@ app.post('/api/employees', async (req, res) => {
 });
 
 // Rota para excluir um funcionário
-app.delete('/api/employees/:id', async (req, res) => {
+app.delete('/:id', async (req, res) => {
     const { id } = req.params; // ID recebido da URL
     console.log('Recebendo requisição DELETE para o ID:', id);
 
@@ -99,7 +109,7 @@ app.delete('/api/employees/:id', async (req, res) => {
 });
 
 // Rota para editar um funcionário
-app.put('/api/employees/:id', async (req, res) => {
+app.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { name, position, salary, dob, address } = req.body;
 
