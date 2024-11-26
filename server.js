@@ -68,6 +68,8 @@ app.post('/employees', async (req, res) => {
   try {
     const employee = new Employee({ name, position, salary, dob, address });
     await employee.save();
+
+    console.log("Funcionário criado:", employee);  // Log para verificar
     res.status(201).json(employee); // Retorna o funcionário recém-criado
   } catch (err) {
     console.error('Erro ao salvar funcionário:', err);

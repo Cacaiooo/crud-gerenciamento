@@ -19,16 +19,15 @@ document.getElementById("addForm").addEventListener("submit", async (e) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, position, salary, dob, address }),
         });
-
-        console.log("Resposta da API ao criar funcionário:", response); // Log da resposta completa da API
-
+        
+        console.log("Resposta da API ao criar funcionário:", response); // Adiciona este log
+        
         if (response.ok) {
-            const newEmployee = await response.json(); // Aguarda o JSON da resposta
-            console.log("Funcionário criado com sucesso:", newEmployee); // Loga o funcionário criado
-            fetchEmployees(); // Atualiza a lista de funcionários
-            document.getElementById("employeeForm").reset(); // Reseta o formulário
+            const newEmployee = await response.json();
+            console.log("Funcionário criado com sucesso:", newEmployee); 
+            fetchEmployees(); 
         } else {
-            console.error("Erro ao criar funcionário:", await response.json()); // Loga o erro vindo do backend
+            console.error("Erro ao criar funcionário:", await response.json());
         }
     } catch (error) {
         console.error("Erro na requisição de criação:", error); // Log de erro no fetch
