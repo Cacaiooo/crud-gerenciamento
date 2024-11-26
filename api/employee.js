@@ -1,5 +1,5 @@
 const express = require('express');
-const Employee = require('../employee');
+const Employee = require('./employee');
 const router = express.Router();
 
 // Rota para listar todos os funcionários

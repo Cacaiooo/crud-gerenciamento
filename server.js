@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const Employee = require('./api/employee');
 const dotenv = require('dotenv');
-const employeesRouter = require('./api/employees'); // Importe o roteador
+const employeesRouter = require('./api/employee'); // Importe o roteador
 
 dotenv.config();
 
@@ -30,8 +30,8 @@ mongoose
     console.error('Erro de conexão ao MongoDB:', err);
   });
 
-// **ADICIONE O ROTEADOR AQUI**
-app.use('', employeesRouter); // Rota para gerenciamento de funcionários
+
+app.use('./api/employee.js', employeesRouter); // Rota para gerenciamento de funcionários
 
 // Inicia o servidor na porta configurada
 app.listen(port, () => {
