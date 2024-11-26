@@ -16,19 +16,18 @@ router.get('/', async (req, res) => {
 });
 
 // Rota para buscar funcionário por ID
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-      const employee = await Employee.findById(id);
-      if (!employee) {
-          return res.status(404).json({ message: 'Funcionário não encontrado' });
-      }
-      res.json(employee);
-  } catch (error) {
-      console.error('Erro ao buscar funcionário:', error);
-      res.status(500).json({ message: 'Erro ao buscar funcionário' });
-  }
+router.get('/', async (req, res) => {
+    console.log("Recebendo requisição para listar todos os funcionários");
+    try {
+        const employees = await Employee.find(); // Busca todos os funcionários no banco
+        console.log("Funcionários encontrados:", employees);
+        res.json(employees);
+    } catch (error) {
+        console.error("Erro ao listar funcionários:", error);
+        res.status(500).json({ message: 'Erro ao listar funcionários' });
+    }
 });
+
 
 // Rota para adicionar um novo funcionário
 router.post('/', async (req, res) => {
