@@ -43,7 +43,7 @@ app.get('/api/employees', async (req, res) => {
 });
 
 // Rota para buscar funcionário por ID
-app.get('/employees/:id', async (req, res) => {
+app.get('/api/employees/:id', async (req, res) => {
   const { id } = req.params;
   try {
       const employee = await Employee.findById(id);
@@ -58,7 +58,7 @@ app.get('/employees/:id', async (req, res) => {
 });
 
 // Rota para adicionar um novo funcionário
-app.post('/employees', async (req, res) => {
+app.post('/api/employees', async (req, res) => {
   const { name, position, salary, dob, address } = req.body;
 
   if (!name || !position || !salary || !dob || !address) {
@@ -78,7 +78,7 @@ app.post('/employees', async (req, res) => {
 });
 
 // Rota para excluir um funcionário
-app.delete('/employees/:id', async (req, res) => {
+app.delete('/api/employees/:id', async (req, res) => {
     const { id } = req.params; // ID recebido da URL
     console.log('Recebendo requisição DELETE para o ID:', id);
 

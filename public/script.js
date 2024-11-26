@@ -1,4 +1,4 @@
-const API_URL = 'https://crud-gerenciamento.vercel.app/';
+const API_URL = 'https://crud-gerenciamento.vercel.app/api/employees';
 
 // Função para adicionar funcionário
 document.getElementById("addForm").addEventListener("submit", async (e) => {
@@ -15,20 +15,20 @@ document.getElementById("addForm").addEventListener("submit", async (e) => {
 
     try {
         const response = await fetch(API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, position, salary, dob, address }),
-        });
-        
-        console.log("Resposta da API ao criar funcionário:", response); // Adiciona este log
-        
-        if (response.ok) {
-            const newEmployee = await response.json();
-            console.log("Funcionário criado com sucesso:", newEmployee); 
-            fetchEmployees(); 
-        } else {
-            console.error("Erro ao criar funcionário:", await response.json());
-        }
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, position, salary, dob, address }),
+});
+
+console.log("Resposta da API ao criar funcionário:", response); // Adiciona este log
+
+if (response.ok) {
+    const newEmployee = await response.json();
+    console.log("Funcionário criado com sucesso:", newEmployee); 
+    fetchEmployees(); 
+} else {
+    console.error("Erro ao criar funcionário:", await response.json());
+}
     } catch (error) {
         console.error("Erro na requisição de criação:", error); // Log de erro no fetch
     }
@@ -93,7 +93,7 @@ function displayEmployees(employees) {
         console.log("Abrindo formulário de edição para funcionário:", employeeId);
     
         try {
-            const response = await fetch('https://crud-gerenciamento.vercel.app/api/employees');
+            const response = await fetch(`${API_URL}/${employeeId}`);
             if (!response.ok) {
                 throw new Error(`Erro ao buscar funcionário: ${response.statusText}`);
             }
