@@ -7,51 +7,40 @@ document.getElementById("addForm").addEventListener("submit", async (e) => {
 
     const name = document.getElementById("name").value;
     const position = document.getElementById("position").value;
-    const salary = document.getElementById("salary").value;
+    const salary = parseFloat(document.getElementById("salary").value); // Garantir que seja um número
     const dob = document.getElementById("dob").value;
     const address = document.getElementById("address").value;
 
     console.log("Dados coletados do formulário:", { name, position, salary, dob, address }); // Log para ver os dados coletados
 
+    // Validação simples dos campos
+    if (!name || !position || isNaN(salary) || !dob || !address) {
+        console.error("Por favor, preencha todos os campos corretamente.");
+        return;
+    }
+
     try {
         const response = await fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, position, salary, dob, address }),
-});
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, position, salary, dob, address }),
+        });
 
-console.log("Resposta da API ao criar funcionário:", response); // Adiciona este log
+        console.log("Resposta da API ao criar funcionário:", response); // Adiciona este log
 
-if (response.ok) {
-    const newEmployee = await response.json();
-    console.log("Funcionário criado com sucesso:", newEmployee); 
-    fetchEmployees(); 
-} else {
-    console.error("Erro ao criar funcionário:", await response.json());
-}
+        if (response.ok) {
+            const newEmployee = await response.json();
+            console.log("Funcionário criado com sucesso:", newEmployee); 
+            fetchEmployees(); // Atualiza a lista de funcionários
+        } else {
+            const errorData = await response.json();
+            console.error("Erro ao criar funcionário:", errorData);
+        }
     } catch (error) {
         console.error("Erro na requisição de criação:", error); // Log de erro no fetch
     }
 });
 
-// Função para buscar e exibir funcionários
-async function fetchEmployees() {
-    console.log("Buscando funcionários..."); // Log antes de buscar
-    try {
-        const response = await fetch(API_URL);
-        console.log("Resposta da API ao buscar funcionários:", response); // Log da resposta completa da API
-
-        if (response.ok) {
-            const employees = await response.json();
-            console.log("Funcionários recebidos:", employees); // Log dos dados recebidos
-            displayEmployees(employees);
-        } else {
-            console.error("Erro ao buscar funcionários:", await response.json());
-        }
-    } catch (error) {
-        console.error("Erro na requisição de busca:", error);
-    }
-}
 
 // Função para exibir funcionários na tabela
 
