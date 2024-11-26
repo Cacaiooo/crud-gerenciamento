@@ -31,7 +31,12 @@ mongoose
   });
 
 
-app.use('./api/employee', employeesRouter); // Rota para gerenciamento de funcionários
+  app.use('/api/employee', (req, res, next) => {
+    console.log('Rota /api/employee foi chamada');
+    next();  // Passa para o próximo middleware ou rota
+});
+
+app.use('/api/employee', employeesRouter);
 
 // Inicia o servidor na porta configurada
 app.listen(port, () => {
