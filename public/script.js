@@ -1,5 +1,43 @@
 const API_URL = 'https://crud-gerenciamento.vercel.app/api/employee';
 
+const form = document.getElementById('employeeTable');
+
+// Adicione o evento de envio
+form.addEventListener('submit', function(event) {
+  event.preventDefault(); // Evita o envio padrão do formulário
+
+  // Pegue os valores dos inputs
+  const name = document.getElementById('name').value;
+  const position = document.getElementById('position').value;
+  const salary = document.getElementById('salary').value;
+  const dob = document.getElementById('dob').value;
+  const address = document.getElementById('address').value;
+
+  // Envie os dados para a API
+  fetch('https://crud-gerenciamento.vercel.app/api/employee', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name,
+      position,
+      salary,
+      dob,
+      address,
+    }),
+  })
+    .then(response => response.json())  // Converte a resposta para JSON
+    .then(data => {
+      console.log('Resposta da API ao criar funcionário:', data);
+      // Aqui você pode adicionar lógica para exibir a resposta para o usuário
+    })
+    .catch(error => {
+      console.error('Erro na requisição de criação:', error);
+      // Lógica para tratar o erro
+    });
+});
+
 // Função para adicionar funcionário
 document.getElementById("addForm").addEventListener("submit", async (e) => {
     e.preventDefault();
