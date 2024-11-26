@@ -93,7 +93,7 @@ function displayEmployees(employees) {
         console.log("Abrindo formulário de edição para funcionário:", employeeId);
     
         try {
-            const response = await fetch(`${API_URL}/${employeeId}`);
+            const response = await fetch('https://crud-gerenciamento.vercel.app/api/employees');
             if (!response.ok) {
                 throw new Error(`Erro ao buscar funcionário: ${response.statusText}`);
             }

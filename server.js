@@ -30,7 +30,7 @@ mongoose
   });
 
 // Rota para listar um funcionário pelo ID
-app.get('/employees', async (req, res) => {
+app.get('/api/employees', async (req, res) => {
     console.log("Recebendo requisição para listar todos os funcionários"); // Log de requisição
     try {
         const employees = await Employee.find(); // Busca todos os funcionários no banco
