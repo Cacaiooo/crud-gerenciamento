@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const Employee = require('./models/employee');  // Atualizado para o local correto
+const Employee = require('./api/employee');  
 
 dotenv.config();
 
@@ -23,7 +23,7 @@ mongoose
   .catch(err => console.error('Erro de conexão ao MongoDB:', err));
 
 // Roteador de funcionários
-const employeesRouter = require('./routes/employee');
+const employeesRouter = require('./api/employee');
 app.use('/api/employee', employeesRouter);
 
 // Inicia o servidor

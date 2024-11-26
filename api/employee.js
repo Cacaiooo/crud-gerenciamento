@@ -1,5 +1,5 @@
 const express = require('express');
-const Employee = require('../models/employee');  // Modelo correto
+const Employee = require('./employee');  // Modelo correto
 const router = express.Router();
 
 // Rota para listar todos os funcionários
