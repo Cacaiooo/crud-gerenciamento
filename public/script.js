@@ -79,17 +79,21 @@ document.getElementById("addForm").addEventListener("submit", async (e) => {
 });
 
 // Função para buscar e exibir os funcionários
-async function fetchEmployees() {
-    try {
-        const response = await fetch(API_URL);
-        if (!response.ok) {
-            throw new Error(`Erro ao buscar funcionários: ${response.statusText}`);
-        }
-        const employees = await response.json();
-        displayEmployees(employees);
-    } catch (error) {
-        console.error("Erro ao buscar funcionários:", error); // Adiciona mais detalhes ao log
-    }
+function fetchEmployees() {
+    fetch(API_URL)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar funcionários: ' + response.statusText);
+            }
+            return response.json();  // Converter diretamente a resposta para JSON
+        })
+        .then(data => {
+            displayEmployees(data);  // Exibe os funcionários
+        })
+        .catch(error => {
+            alert('Erro ao buscar funcionários. Por favor, tente novamente mais tarde.');  // Mensagem simples de erro
+            console.error("Erro:", error);
+        });
 }
 
 function formatDate(date) {
