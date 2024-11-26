@@ -1,5 +1,5 @@
 const express = require('express');
-const Employee = require('./employee');
+const Employee = mongoose.model('Employee', employeeSchema);
 const router = express.Router();
 
 // Rota para listar todos os funcionários
@@ -99,3 +99,4 @@ router.put('/:id', async (req, res) => {
 });
 
 module.exports = router; // Exporta o roteador
+module.exports = Employee;
