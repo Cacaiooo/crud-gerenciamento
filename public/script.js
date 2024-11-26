@@ -1,47 +1,8 @@
-const API_URL = 'https://crud-gerenciamento.vercel.app/api/employee';
-
-const form = document.getElementById('employeeTable');
-
-// Adicione o evento de envio
-form.addEventListener('submit', function(event) {
-  event.preventDefault(); // Evita o envio padrão do formulário
-
-  // Pegue os valores dos inputs
-  const name = document.getElementById('name').value;
-  const position = document.getElementById('position').value;
-  const salary = document.getElementById('salary').value;
-  const dob = document.getElementById('dob').value;
-  const address = document.getElementById('address').value;
-
-  // Envie os dados para a API
-  fetch('https://crud-gerenciamento.vercel.app/api/employee', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      name,
-      position,
-      salary,
-      dob,
-      address,
-    }),
-  })
-    .then(response => response.json())  // Converte a resposta para JSON
-    .then(data => {
-      console.log('Resposta da API ao criar funcionário:', data);
-      // Aqui você pode adicionar lógica para exibir a resposta para o usuário
-    })
-    .catch(error => {
-      console.error('Erro na requisição de criação:', error);
-      // Lógica para tratar o erro
-    });
-});
+const API_URL = 'https://crud-gerenciamento.vercel.app/api/employee';  // URL da API no Vercel
 
 // Função para adicionar funcionário
 document.getElementById("addForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    console.log("Formulário enviado.");
 
     const name = document.getElementById("name").value;
     const position = document.getElementById("position").value;
@@ -49,97 +10,91 @@ document.getElementById("addForm").addEventListener("submit", async (e) => {
     const dob = document.getElementById("dob").value;
     const address = document.getElementById("address").value;
 
-    console.log("Dados coletados do formulário:", { name, position, salary, dob, address });
-
     if (!name || !position || isNaN(salary) || !dob || !address) {
-        console.error("Por favor, preencha todos os campos corretamente.");
+        alert("Por favor, preencha todos os campos corretamente.");
         return;
     }
 
     try {
         const response = await fetch(API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, position, salary, dob, address }),
         });
 
-        console.log("Resposta da API ao criar funcionário:", response);
-
+        const newEmployee = await response.json();
         if (response.ok) {
-            const newEmployee = await response.json();
-            console.log("Funcionário criado com sucesso:", newEmployee);
-            fetchEmployees(); // Atualiza a lista de funcionários
+            alert("Funcionário criado com sucesso");
+            fetchEmployees();  // Atualiza a lista de funcionários
         } else {
-            const errorData = await response.json();
-            console.error("Erro ao criar funcionário:", errorData);
+            alert("Erro ao criar funcionário");
         }
     } catch (error) {
-        console.error("Erro na requisição de criação:", error);
+        alert("Erro na requisição de criação");
+        console.error('Erro na requisição:', error);
     }
 });
 
 // Função para buscar e exibir os funcionários
-function fetchEmployees() {
-    fetch(API_URL)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao buscar funcionários: ' + response.statusText);
-            }
-            return response.json();  // Converter diretamente a resposta para JSON
-        })
-        .then(data => {
-            displayEmployees(data);  // Exibe os funcionários
-        })
-        .catch(error => {
-            alert('Erro ao buscar funcionários. Por favor, tente novamente mais tarde.');  // Mensagem simples de erro
-            console.error("Erro:", error);
-        });
+async function fetchEmployees() {
+    try {
+        const response = await fetch(API_URL);
+        if (!response.ok) {
+            throw new Error('Erro ao buscar funcionários');
+        }
+        const employees = await response.json();
+        displayEmployees(employees);
+    } catch (error) {
+        alert("Erro ao buscar funcionários");
+        console.error('Erro:', error);
+    }
 }
 
-function formatDate(date) {
-    const d = new Date(date);
-    const day = d.getDate().toString().padStart(2, '0');
-    const month = (d.getMonth() + 1).toString().padStart(2, '0');
-    const year = d.getFullYear();
-    return `${day}/${month}/${year}`;
-}
-
+// Exibir os funcionários
 function displayEmployees(employees) {
     const employeeList = document.querySelector("#employeeTable tbody");
     employeeList.innerHTML = "";
 
-    employees.forEach((employee) => {
-        const formattedDob = formatDate(employee.dob);
-
+    employees.forEach(employee => {
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${employee.name}</td>
             <td>${employee.position}</td>
             <td>${employee.salary}</td>
-            <td>${formattedDob}</td>
+            <td>${new Date(employee.dob).toLocaleDateString()}</td>
             <td>${employee.address}</td>
             <td>
-                <button class="btn btn-warning btn-sm edit-btn" data-id="${employee._id}">Editar</button>
-                <button class="btn btn-danger btn-sm delete-btn" data-id="${employee._id}">Excluir</button>
+                <button class="edit-btn" data-id="${employee._id}">Editar</button>
+                <button class="delete-btn" data-id="${employee._id}">Excluir</button>
             </td>
         `;
         employeeList.appendChild(row);
     });
 
-    document.querySelectorAll('.edit-btn').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const employeeId = e.target.dataset.id;
-            openEditForm(employeeId);
-        });
-    });
-
+    // Adicionando evento para editar e excluir funcionários
     document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const employeeId = e.target.dataset.id;
-            deleteEmployee(employeeId);
+        button.addEventListener('click', async (e) => {
+            const id = e.target.dataset.id;
+            await deleteEmployee(id);
         });
     });
 }
 
-// Inicializa carregando os funcionários
+// Excluir funcionário
+async function deleteEmployee(id) {
+    try {
+        const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+        if (response.ok) {
+            alert("Funcionário excluído com sucesso");
+            fetchEmployees();  // Atualiza a lista de funcionários
+        } else {
+            alert("Erro ao excluir funcionário");
+        }
+    } catch (error) {
+        alert("Erro ao excluir funcionário");
+        console.error('Erro:', error);
+    }
+}
+
+// Carregar funcionários na inicialização
 fetchEmployees();
