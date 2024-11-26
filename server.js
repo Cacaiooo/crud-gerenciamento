@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const Employee = require('./api/employee.js');
+const Employee = require('./api/employee');
 const dotenv = require('dotenv');
 
 dotenv.config();

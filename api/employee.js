@@ -1,6 +1,6 @@
 // api/employees.js
 const express = require('express');
-const Employee = require('../models/Employee');
+const Employee = require('../api/employee');
 const router = express.Router();
 
 // Rota para listar todos os funcionários
